@@ -39,5 +39,8 @@ main {
 .cell {
   height: 60px;
   width: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border: 2px solid black;
 }/*# sourceMappingURL=styles.css.map */
