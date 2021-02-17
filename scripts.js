@@ -9,44 +9,43 @@ class Cell {
   }
 }
 
-const renderBoard = () => {
-  const gameGrid = document.getElementById("game-grid");
-  for (let i = 1; i < 101; i++)
-  gameGrid.innerHTML += `<div id='${i}' class='cell'></div>`;
+// Populate the game grid with divs because I'm too lazy to make 100 divs
+
+const renderBoard = div => {
+  for (let i = 0; i < 100; i++)
+  div.innerHTML += `<div id='${i}' class='cell'></div>`;
 }
 
-renderBoard();
+renderBoard(document.getElementById("game-grid"));
 
 // Create an array of 100 objects representing each cell with their corresponding row and column data
 
-const createGameArray = () => {
+const createGameArray = (cellClass) => {
   let tempArr = [];
   for (let row = 0; row < 10; row++) {
     tempArr[row] = [];
     for (let col = 0; col < 10; col++) {
-      tempArr[row][col] = new Cell(col, row);
+      tempArr[row][col] = new cellClass(col, row);
     }
   }
   return [].concat.apply([], tempArr);
 };
 
-const gameArr = createGameArray();
+// An unfortunately necessarry global variable
+const gameArr = createGameArray(Cell);
 
 // Randomly place 10 bombs on cells
-const placeBombs = () => {
-  for (let i = 0; i < 10; i++)
+const placeBombs = (gameArr) => {
+  for (let i = 0; i < 15; i++)
     gameArr[Math.floor(Math.random() * 100)].isBomb = true;
 };
-placeBombs();
+placeBombs(gameArr);
 
 console.log(gameArr);
 
-// Populate the game grid with divs because I'm too lazy to make 100 divs
-
-
 // Increment values on each cell depending on how many adjacent bombs it has
-const calculateAdjacentCell = () => {
-  gameArr.forEach((cell, index, arr) => {
+const calculateAdjacentCell = (gameArr) => {
+  gameArr.forEach((cell, i, arr) => {
     const colLeft = arr.find(
       (object) => object.id == `${cell.row}${cell.column - 1}`
     );
@@ -81,33 +80,26 @@ const calculateAdjacentCell = () => {
       if (colRight.isBomb) adjacentBombs++;
     }
 
-    console.log(cell.id);
     if (rowUp != undefined) {
-      console.log("rowup = " + rowUp.id);
       if (rowUp.isBomb) adjacentBombs++;
     }
 
     if (rowDown != undefined) {
-      console.log("rowdown = " + rowDown.id);
       if (rowDown.isBomb) adjacentBombs++;
     }
 
     if (diagUpLeft != undefined) {
-      console.log("diagupleft = " + diagUpLeft.id);
       if (diagUpLeft.isBomb) adjacentBombs++;
     }
 
     if (diagUpRight != undefined) {
-      console.log("diagupright = " + diagUpRight.id);
       if (diagUpRight.isBomb) adjacentBombs++;
     }
 
     if (diagDownLeft != undefined) {
-      console.log("diagdownleft = " + diagDownLeft.id);
       if (diagDownLeft.isBomb) adjacentBombs++;
     }
     if (diagDownRight != undefined) {
-      console.log("diagdownright = " + diagDownRight.id);
       if (diagDownRight.isBomb) adjacentBombs++;
     }
 
@@ -115,12 +107,10 @@ const calculateAdjacentCell = () => {
   });
 };
 
-calculateAdjacentCell();
+calculateAdjacentCell(gameArr);
 
 // rendering stuff just for debug purposes
-const renderCells = () => {
-  const cellArr = document.querySelectorAll(".cell");
-  console.log(cellArr);
+const renderCells = (cellArr) => {
 
   cellArr.forEach((cell, index) => {
     if (gameArr[index].isBomb) cell.innerHTML = "💣";
@@ -129,10 +119,34 @@ const renderCells = () => {
   });
 };
 
-renderCells();
+renderCells(document.querySelectorAll(".cell"));
 
 // Click events on each cell
-//  If the user clicks a bomb, game over
-//  If the user clicks a cell with a number, reveal the cell
-//  If the user clicks a cell with no value, check adjacent cells to see if they have values (that aren't bombs) and reveal them if they do
-//    Call this recursively for each cell checked until values are revealed
+const handleCellClick = (cellArr, gameArr) => {
+
+  cellArr.forEach(cell => {
+    cell.addEventListener('click', (event) => {
+      const currentCell = gameArr.find(object => object.id == event.target.id);
+      console.log("cell clicked: " + event.target.id);
+      console.log(currentCell);
+
+      //  If the user clicks a bomb, game over
+      if(currentCell.isBomb) console.log('BANG!')
+
+      //  If the user clicks a cell with no value, check adjacent cells to see if they have values (that aren't bombs) and reveal them if they do
+      else if(currentCell.adjacentBombCount == 0) console.log("empty")
+      //    Call this recursively for each cell checked until values are revealed
+      
+      //  If the user clicks a cell with a number, reveal the cell
+      else console.log("Cell revealed. Amount of bombs nearby: " + currentCell.adjacentBombCount);
+      
+
+    });
+
+  });
+}
+
+handleCellClick(document.querySelectorAll(".cell"), gameArr) 
+
+
+

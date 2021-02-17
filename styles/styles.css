@@ -32,13 +32,10 @@ main {
   width: 600px;
   border: 4px solid black;
   display: grid;
-  grid-template-columns: 60px 60px 60px 60px 60px 60px 60px 60px 60px 60px;
-  grid-template-rows: 60px 60px 60px 60px 60px 60px 60px 60px 60px 60px;
+  grid: repeat(10, 1fr)/repeat(10, 1fr);
 }
 
 .cell {
-  height: 60px;
-  width: 60px;
   display: flex;
   justify-content: center;
   align-items: center;
