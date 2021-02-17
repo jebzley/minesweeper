@@ -1,6 +1,7 @@
 body{
   height: 100vh;
   width: 100vw;
+  background-color: darkgray;
 }
 
 main{
@@ -14,6 +15,7 @@ main{
   position: relative;
   height: 750px;
   width: 640px;
+  background-color: white;
   border: 6px solid black;
 }
 
@@ -28,6 +30,10 @@ main{
   display: grid;
   grid: repeat(10, 1fr) / repeat(10, 1fr);
 }
+.revealed{
+  font-weight: bolder;
+  background-color: green;
+}
 
 .cell{
   display: flex;
@@ -35,3 +41,4 @@ main{
   align-items: center;
   border: 2px solid black;
 }
+
