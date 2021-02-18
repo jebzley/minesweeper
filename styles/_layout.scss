@@ -30,15 +30,27 @@ main{
   display: grid;
   grid: repeat(10, 1fr) / repeat(10, 1fr);
 }
-.revealed{
-  font-weight: bolder;
-  background-color: green;
-}
-
 .cell{
   display: flex;
   justify-content: center;
   align-items: center;
   border: 2px solid black;
+  background-color: lightgray;
+  p{
+    display: none;
+  }
+}
+
+.revealed{
+  font-weight: bolder;
+  background-color: white;
+  p{
+    display: inline;
+  }
+}
+
+.flagged{
+  background-image: url('../img/flag.png');
+  background-size: cover;
 }
 

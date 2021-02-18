@@ -1,3 +1,10 @@
+// ====================== TODO ======================
+// - Add gameover state/reset button
+//       ^ BE AT LEAST HERE BY END OF DAY ^
+// - Add timer/smiley/bomb count
+// - CSS styling
+// - Create unit tests / e2e tests
+
 class Cell {
   constructor(column, row) {
     this.column = column;
@@ -6,21 +13,21 @@ class Cell {
     this.isBomb = false;
     this.hasFlag = false;
     this.adjacentBombCount = 0;
+    this.isRevealed = false;
   }
 }
 
-// Populate the game grid with divs because I'm too lazy to make 100 divs
-
-const renderBoard = (div) => {
+const renderBoard = () => {
+  let divContent = "";
   for (let i = 0; i < 100; i++) {
-    if (i < 10) div.innerHTML += `<div id='cell0${i}' class='cell'></div>`;
-    else div.innerHTML += `<div id='cell${i}' class='cell'></div>`;
+    if (i < 10) divContent += `<div id='cell0${i}' class='cell'></div>`;
+    else divContent += `<div id='cell${i}' class='cell'></div>`;
   }
+  console.log(divContent);
+  return divContent;
 };
 
-renderBoard(document.getElementById("game-grid"));
-
-// Create an array of 100 objects representing each cell with their corresponding row and column data
+document.getElementById("game-grid").innerHTML = renderBoard();
 
 const createGameArray = (cellClass) => {
   let tempArr = [];
@@ -33,17 +40,14 @@ const createGameArray = (cellClass) => {
   return [].concat.apply([], tempArr);
 };
 
-// An unfortunately necessarry global variable
 const gameArr = createGameArray(Cell);
 
-// Randomly place 10 bombs on cells
 const placeBombs = (gameArr) => {
   for (let i = 0; i < 15; i++)
     gameArr[Math.floor(Math.random() * 100)].isBomb = true;
 };
-placeBombs(gameArr);
 
-console.log(gameArr);
+placeBombs(gameArr);
 
 const findAdjacentCells = (cell, arr) => {
   const adjacentCellArr = [];
@@ -75,8 +79,7 @@ const findAdjacentCells = (cell, arr) => {
   return adjacentCellArr;
 };
 
-// Increment values on each cell depending on how many adjacent bombs it has
-const calculateAdjacentCell = (gameArr) => {
+const calculateAdjacentBombCount = (gameArr) => {
   gameArr.forEach((cell) => {
     const adjacentCells = findAdjacentCells(cell, gameArr);
 
@@ -92,61 +95,75 @@ const calculateAdjacentCell = (gameArr) => {
   });
 };
 
-calculateAdjacentCell(gameArr);
+calculateAdjacentBombCount(gameArr);
 
-// rendering stuff just for debug purposes
-const renderCells = (cellArr) => {
-  cellArr.forEach((cell, index) => {
-    if (gameArr[index].isBomb) cell.innerHTML = "💣";
-    else if (gameArr[index].adjacentBombCount == 0) cell.innerHTML = "";
-    else cell.innerHTML = gameArr[index].adjacentBombCount;
-  });
+const renderCells = (gameArr, index) => {
+  if (gameArr[index].isBomb) return "<p>💣</p>";
+  else if (gameArr[index].adjacentBombCount == 0) return "";
+  else if (gameArr[index].adjacentBombCount == 1)
+    return '<p style="color:blue">1</p>';
+  else if (gameArr[index].adjacentBombCount == 2)
+    return '<p style="color:green">2</p>';
+  else if (gameArr[index].adjacentBombCount > 2)
+    return `<p style="color:red">${gameArr[index].adjacentBombCount}</p>`;
 };
 
-renderCells(document.querySelectorAll(".cell"));
+document.querySelectorAll(".cell").forEach((cell, index) => {
+  cell.innerHTML = renderCells(gameArr, index);
+});
 
 const findOccupiedCells = (currentCell, gameArr) => {
-  const adjacentCells = findAdjacentCells(currentCell, gameArr);
-
+  const adjacentCells = findAdjacentCells(currentCell, gameArr).filter(
+    (cell) => cell != undefined && !cell.isRevealed && !cell.isBomb
+  && !cell.hasFlag);
   adjacentCells.forEach((adjacentCell) => {
-    // do adjacent cells have a value?
-    if (adjacentCell != undefined && adjacentCell.adjacentBombCount > 0) {
-      // if so, reveal them
-      document.getElementById(`${adjacentCell.id}`).classList.add("revealed");
-    } 
-    // if an adjacent cell doesn't have a value and hasn't already been checked, recursively run this script
-    // once no more cells can be checked, break out of the loop somehow
+    if (adjacentCell.adjacentBombCount > 0 && !adjacentCell.isRevealed) {
+      adjacentCell.isRevealed = true;
+    } else if (
+      adjacentCell.adjacentBombCount == 0 &&
+      !adjacentCell.isRevealed
+    ) {
+      adjacentCell.isRevealed = true;
+      findOccupiedCells(adjacentCell, gameArr);
+    }
   });
 };
 
-// Click events on each cell
-const handleCellClick = (cellArr, gameArr) => {
-  cellArr.forEach((cell) => {
-    cell.addEventListener("click", (event) => {
-      const currentCell = gameArr.find(
-        (object) => object.id == event.target.id
-      );
-      console.log("cell clicked: " + event.target.id);
-      console.log(currentCell);
+const toggle = bool => bool ? false : true;
 
-      //  If the user clicks a bomb, game over
-      if (currentCell.isBomb) console.log("BANG!");
-      //  If the user clicks a cell with no value, check adjacent cells to see if they have values (that aren't bombs) and reveal them if they do
-      else if (currentCell.adjacentBombCount == 0) {
-        findOccupiedCells(currentCell, gameArr);
-        // do adjacent cells have a value?
-        // if(adjacentCell != undefined && adjacentCell.adjacentBombCount > 0){
-        // if so, reveal them
-        // document.getElementById(`${adjacentCell.id}`).classList.add("revealed");
-        //}
+// ----------------------------GAME & HTML LOGIC----------------------------
 
-        // if not, run this function on them
+document.querySelectorAll(".cell").forEach((cell) => {
+  const currentCell = gameArr.find((object) => object.id == cell.id);
+  cell.addEventListener("contextmenu", (event) => {
+    if(!currentCell.isRevealed){
+      currentCell.hasFlag = toggle(currentCell.hasFlag);
+      cell.classList.toggle('flagged');
+    }
+    event.preventDefault();
+  }, false)
+
+  cell.addEventListener("click", (event) => {
+    console.log("cell clicked: " + event.target.id);
+    console.log(currentCell);
+
+    //  If the user clicks a bomb, game over
+    if (currentCell.isBomb && !currentCell.hasFlag) {
+      //end game
+    }
+    else if (currentCell.adjacentBombCount == 0 && !currentCell.hasFlag) {
+      findOccupiedCells(currentCell, gameArr);
+    }
+
+    if (!currentCell.isRevealed && !currentCell.hasFlag){
+      currentCell.isRevealed = true;
+    }
+    
+    gameArr.forEach((object) => {
+      if (object.isRevealed){
+        document.getElementById(`${object.id}`).classList.add('revealed')
+        object.hasFlag = false;
       }
-
-      //  If the user clicks a cell with a number, reveal the cell
-      else event.target.classList.add("revealed");
-    });
+    })
   });
-};
-
-handleCellClick(document.querySelectorAll(".cell"), gameArr);
+});
