@@ -1,3 +1,4 @@
+//import { Cell, renderBoard, createGameArray, placeBombs, getBombCount, findAdjacentCells, calculateAdjacentBombCount, renderCells, findOccupiedCells, toggle, gameOver } from 'minesweeper.js';
 // ====================== TODO ======================
 // - Fix flag bugs
 // - CSS styling
@@ -24,7 +25,7 @@ const renderBoard = () => {
   }
   return divContent;
 };
-
+eeeeeeeeeeeeeeeeeeeeeeee
 document.getElementById("game-grid").innerHTML = renderBoard();
 
 const createGameArray = (cellClass) => {
