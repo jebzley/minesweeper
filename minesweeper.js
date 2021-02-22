@@ -50,7 +50,7 @@ export const getBombCount = (gameArr) => {
   return amountOfBombs;
 };
 
-export const findAdjacentCells = (cell, arr) => {
+const findAdjacentCells = (cell, arr) => {
   const adjacentCellArr = [];
 
   adjacentCellArr[0] = arr.find(

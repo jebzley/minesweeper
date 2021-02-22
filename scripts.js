@@ -1,166 +1,26 @@
-//import { Cell, renderBoard, createGameArray, placeBombs, getBombCount, findAdjacentCells, calculateAdjacentBombCount, renderCells, findOccupiedCells, toggle, gameOver } from 'minesweeper.js';
-// ====================== TODO ======================
-// - Fix flag bugs
-// - CSS styling
-// - Create unit tests / e2e tests
+import {
+  Cell,
+  renderBoard,
+  createGameArray,
+  placeBombs,
+  getBombCount,
+  calculateAdjacentBombCount,
+  renderCells,
+  findOccupiedCells,
+  toggle,
+  gameOver,
+  padNumber,
+} from "./minesweeper.js";
 
-class Cell {
-  constructor(column, row) {
-    this.column = column;
-    this.row = row;
-    this.id = `cell${this.row}${this.column}`;
-    this.isBomb = false;
-    this.hasFlag = false;
-    this.adjacentBombCount = 0;
-    this.isRevealed = false;
-  }
-}
-
-const renderBoard = () => {
-  let divContent = "";
-  for (let i = 0; i < 100; i++) {
-    i < 10
-      ? (divContent += `<div id='cell0${i}' class='cell'></div>`)
-      : (divContent += `<div id='cell${i}' class='cell'></div>`);
-  }
-  return divContent;
-};
-eeeeeeeeeeeeeeeeeeeeeeee
+// INITIALISATION
 document.getElementById("game-grid").innerHTML = renderBoard();
-
-const createGameArray = (cellClass) => {
-  let tempArr = [];
-  for (let row = 0; row < 10; row++) {
-    tempArr[row] = [];
-    for (let col = 0; col < 10; col++) {
-      tempArr[row][col] = new cellClass(col, row);
-    }
-  }
-  return [].concat.apply([], tempArr);
-};
-
 const gameArr = createGameArray(Cell);
-
-const placeBombs = (gameArr) => {
-  let randomNumArray = [];
-  while (randomNumArray.length < 15) {
-    let randomNumber = Math.floor(Math.random() * 99);
-    if(randomNumArray.indexOf(randomNumber)  === -1) randomNumArray.push(randomNumber);
-  }
-  randomNumArray.forEach(number => {
-    gameArr[number].isBomb = true;
-  })
-};
-
 placeBombs(gameArr);
-
-const getBombCount = (gameArr) => {
-  let amountOfBombs = 0;
-  gameArr.forEach((object) => {
-    if (object.isBomb) amountOfBombs++;
-  });
-  return amountOfBombs;
-};
-
 let amountOfBombs = getBombCount(gameArr);
-
-const findAdjacentCells = (cell, arr) => {
-  const adjacentCellArr = [];
-
-  adjacentCellArr[0] = arr.find(
-    (object) => object.id == `cell${cell.row}${cell.column - 1}`
-  );
-  adjacentCellArr[1] = arr.find(
-    (object) => object.id == `cell${cell.row}${cell.column + 1}`
-  );
-  adjacentCellArr[2] = arr.find(
-    (object) => object.id == `cell${cell.row - 1}${cell.column}`
-  );
-  adjacentCellArr[3] = arr.find(
-    (object) => object.id == `cell${cell.row + 1}${cell.column}`
-  );
-  adjacentCellArr[4] = arr.find(
-    (object) => object.id == `cell${cell.row - 1}${cell.column - 1}`
-  );
-  adjacentCellArr[5] = arr.find(
-    (object) => object.id == `cell${cell.row - 1}${cell.column + 1}`
-  );
-  adjacentCellArr[6] = arr.find(
-    (object) => object.id == `cell${cell.row + 1}${cell.column - 1}`
-  );
-  adjacentCellArr[7] = arr.find(
-    (object) => object.id == `cell${cell.row + 1}${cell.column + 1}`
-  );
-  return adjacentCellArr;
-};
-
-const calculateAdjacentBombCount = (gameArr) => {
-  gameArr.forEach((cell) => {
-    const adjacentCells = findAdjacentCells(cell, gameArr);
-
-    let adjacentBombs = 0;
-
-    adjacentCells.forEach((adjacentCell) => {
-      if (adjacentCell != undefined) {
-        if (adjacentCell.isBomb) adjacentBombs++;
-      }
-    });
-
-    cell.adjacentBombCount = adjacentBombs;
-  });
-};
-
 calculateAdjacentBombCount(gameArr);
-
-const renderCells = (gameArr, index) => {
-  if (gameArr[index].isBomb) return "<img src='./img/bomb.png'>";
-  else if (gameArr[index].adjacentBombCount == 0) return "";
-  else if (gameArr[index].adjacentBombCount == 1)
-    return '<p style="color:blue">1</p>';
-  else if (gameArr[index].adjacentBombCount == 2)
-    return '<p style="color:green">2</p>';
-  else if (gameArr[index].adjacentBombCount > 2)
-    return `<p style="color:red">${gameArr[index].adjacentBombCount}</p>`;
-};
-
 document.querySelectorAll(".cell").forEach((cell, index) => {
   cell.innerHTML = renderCells(gameArr, index);
 });
-
-const findOccupiedCells = (currentCell, gameArr) => {
-  const adjacentCells = findAdjacentCells(currentCell, gameArr).filter(
-    (cell) =>
-      cell != undefined && !cell.isRevealed && !cell.isBomb && !cell.hasFlag
-  );
-  adjacentCells.forEach((adjacentCell) => {
-    if (adjacentCell.adjacentBombCount > 0 && !adjacentCell.isRevealed) {
-      adjacentCell.isRevealed = true;
-    } else if (
-      adjacentCell.adjacentBombCount == 0 &&
-      !adjacentCell.isRevealed
-    ) {
-      adjacentCell.isRevealed = true;
-      findOccupiedCells(adjacentCell, gameArr);
-    }
-  });
-};
-
-const toggle = (bool) => (bool ? false : true);
-
-const gameOver = (gameArr) => {
-  gameArr.forEach((object) => (object.isRevealed = true));
-};
-
-const flagCounter = (state, flagCount) => {
-  if (state) {
-    return (flagCount = flagCount + 1);
-  } else return (flagCount = flagCount - 1);
-};
-
-const padNumber = (number) => (number < 10 ? `0${number}` : number);
-
-// ----------------------------GAME & HTML LOGIC----------------------------
-// INITIALISATION
 const score = {
   amountOfFlags: 0,
   tilesRevealed: 0,
@@ -191,6 +51,7 @@ document.querySelectorAll(".cell").forEach((cell) => {
   cell.addEventListener(
     "contextmenu",
     (event) => {
+      event.preventDefault();
       if (
         !currentCell.isRevealed &&
         currentCell.hasFlag == true &&
@@ -214,7 +75,7 @@ document.querySelectorAll(".cell").forEach((cell) => {
       document.getElementById("flag-count").innerHTML =
         amountOfBombs - score.amountOfFlags;
 
-      event.preventDefault();
+      
     },
     false
   );
