@@ -1,5 +1,5 @@
 // ====================== TODO ======================
-// - Add timer/smiley/bomb count
+// - Fix flag bugs
 // - CSS styling
 // - Create unit tests / e2e tests
 
@@ -40,21 +40,26 @@ const createGameArray = (cellClass) => {
 
 const gameArr = createGameArray(Cell);
 
-
 const placeBombs = (gameArr) => {
-  for (let i = 0; i < 16; i++)
-    {gameArr[Math.floor(Math.random() * 99)].isBomb = true;}
+  let randomNumArray = [];
+  while (randomNumArray.length < 15) {
+    let randomNumber = Math.floor(Math.random() * 99);
+    if(randomNumArray.indexOf(randomNumber)  === -1) randomNumArray.push(randomNumber);
+  }
+  randomNumArray.forEach(number => {
+    gameArr[number].isBomb = true;
+  })
 };
 
 placeBombs(gameArr);
 
-const getBombCount = (gameArr) =>{
+const getBombCount = (gameArr) => {
   let amountOfBombs = 0;
-  gameArr.forEach(object => {
-    if(object.isBomb) amountOfBombs++;
-  }) 
+  gameArr.forEach((object) => {
+    if (object.isBomb) amountOfBombs++;
+  });
   return amountOfBombs;
-}
+};
 
 let amountOfBombs = getBombCount(gameArr);
 
@@ -107,7 +112,7 @@ const calculateAdjacentBombCount = (gameArr) => {
 calculateAdjacentBombCount(gameArr);
 
 const renderCells = (gameArr, index) => {
-  if (gameArr[index].isBomb) return "<img src='../img/bomb.png'>";
+  if (gameArr[index].isBomb) return "<img src='./img/bomb.png'>";
   else if (gameArr[index].adjacentBombCount == 0) return "";
   else if (gameArr[index].adjacentBombCount == 1)
     return '<p style="color:blue">1</p>';
@@ -154,11 +159,15 @@ const flagCounter = (state, flagCount) => {
 const padNumber = (number) => (number < 10 ? `0${number}` : number);
 
 // ----------------------------GAME & HTML LOGIC----------------------------
+// INITIALISATION
 const score = {
   amountOfFlags: 0,
-  tilesRevealed: 0
+  tilesRevealed: 0,
 };
+document.getElementById("flag-count").innerHTML =
+  amountOfBombs - score.amountOfFlags;
 
+// START TIMER
 let timeInSeconds = 0;
 let timeInMinutes = 0;
 
@@ -169,9 +178,9 @@ let timer = setInterval(() => {
     timeInMinutes++;
     timeInSeconds = 0;
   }
-  document.getElementById("timer").innerHTML = `${padNumber(
+  document.getElementById("timer").innerHTML = `<h3>${padNumber(
     timeInMinutes
-  )} : ${padNumber(timeInSeconds)}`;
+  )} : ${padNumber(timeInSeconds)}</h3>`;
 }, 1000);
 
 document.querySelectorAll(".cell").forEach((cell) => {
@@ -181,20 +190,29 @@ document.querySelectorAll(".cell").forEach((cell) => {
   cell.addEventListener(
     "contextmenu",
     (event) => {
-      if (!currentCell.isRevealed && score.amountOfFlags < amountOfBombs) {
+      if (
+        !currentCell.isRevealed &&
+        currentCell.hasFlag == true &&
+        score.amountOfFlags == amountOfBombs
+      ) {
+        currentCell.hasFlag = false;
+        cell.classList.remove("flagged");
+        score.amountOfFlags--;
+      } else if (
+        !currentCell.isRevealed &&
+        score.amountOfFlags < amountOfBombs
+      ) {
         currentCell.hasFlag = toggle(currentCell.hasFlag);
         cell.classList.toggle("flagged");
         score.amountOfFlags = flagCounter(
           currentCell.hasFlag,
           score.amountOfFlags
         );
-      } else {
-        currentCell.hasFlag = false;
-        cell.classList.remove("flagged");
-        if (score.amountOfFlags > 0) score.amountOfFlags--;
       }
+
       document.getElementById("flag-count").innerHTML =
         amountOfBombs - score.amountOfFlags;
+
       event.preventDefault();
     },
     false
@@ -247,16 +265,15 @@ document.querySelectorAll(".cell").forEach((cell) => {
 
   cell.addEventListener("mousedown", () => {
     document.getElementById("smiley").classList.add("smiley--mousedown");
-  })
+  });
 
   cell.addEventListener("mouseup", () => {
     document.getElementById("smiley").classList.remove("smiley--mousedown");
-  })
+  });
 });
 
-
 // HANDLE NEWGAME
-document.querySelectorAll('.reset').forEach((button) =>{
+document.querySelectorAll(".reset").forEach((button) => {
   button.addEventListener("click", () => {
     score.amountOfFlags = 0;
     score.tilesRevealed = 0;
@@ -266,7 +283,7 @@ document.querySelectorAll('.reset').forEach((button) =>{
       object.isRevealed = false;
       object.isBomb = false;
     });
-  
+
     placeBombs(gameArr);
     amountOfBombs = getBombCount(gameArr);
     calculateAdjacentBombCount(gameArr);
@@ -277,26 +294,26 @@ document.querySelectorAll('.reset').forEach((button) =>{
       cell.classList.remove("flagged");
       cell.innerHTML = renderCells(gameArr, index);
     });
-  
-    document.getElementById("flag-count").innerHTML = amountOfBombs - score.amountOfFlags;
-  
-    document.getElementById("timer").innerHTML = `00 : 00`;
+
+    document.getElementById("flag-count").innerHTML =
+      amountOfBombs - score.amountOfFlags;
+
+    document.getElementById("timer").innerHTML = `<h3>00 : 00</h3>`;
     timeInSeconds = 0;
     timeInMinutes = 0;
     clearInterval(timer);
     timer = setInterval(() => {
       timeInSeconds++;
-  
+
       if (timeInSeconds > 60) {
         timeInMinutes++;
         timeInSeconds = 0;
       }
-      document.getElementById("timer").innerHTML = `${padNumber(
+      document.getElementById("timer").innerHTML = `<h3>${padNumber(
         timeInMinutes
-      )} : ${padNumber(timeInSeconds)}`;
+      )} : ${padNumber(timeInSeconds)}</h3>`;
     }, 1000);
     document.getElementById("smiley").classList.remove("smiley--gameover");
     document.getElementById("smiley").classList.remove("smiley--win");
   });
-  
-})
+});
