@@ -1,21 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="./styles/styles.css">
-  <script src = "./scripts.js" async defer></script>
-  <title>Minesweeper</title>
-</head>
-<body>
-  <main>
-    <div id="game-container">
-      <div id="game-grid">
-        
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./styles/styles.css" />
+    <script src="./scripts.js" async defer></script>
+    <title>Minesweeper</title>
+  </head>
+  <body>
+    <main>
+      <div class="window" id="game-container">
+        <div class="window__bar">
+          <img src="./img/bomb.png">
+          <p>Minesweeper</p>
+        </div>
+        <div id="game-info">
+          <div id="timer"></div>
+          <div id="smiley-container">
+            <div class="reset smiley" id="smiley"></div>
+          </div>
+          <div id="flag-count-section">
+            <img src="./img/flag_transparent-01.png">
+            <h3 id="flag-count"></h3>
+          </div>
+        </div>
+        <div id="game-grid"></div>
       </div>
-    </div>
-
-  </main>
-</body>
+      <div class="window"  id="endgame-box">
+        <div class="window__bar"><p>Game over!</p></div>
+        <p id="game-over-message"></p>
+        <button class="reset" id="reset">Reset Game</button>
+      </div>
+    </main>
+  </body>
 </html>

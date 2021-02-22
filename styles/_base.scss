@@ -1,5 +1,23 @@
 html, body{
   margin: 0;
   padding: 0;
+  font-family: 'Microsoft Sans Serif';
+  font-size: 13px;
 }
 
+$border-colour-dark: rgb(77, 77, 77);
+$border-colour-light: rgb(219, 219, 219);
+
+@mixin outset-border($thickness, $colour1, $colour2){
+  border-right: $thickness solid $colour1;
+  border-bottom: $thickness solid $colour1;
+  border-top: $thickness solid $colour2;
+  border-left: $thickness solid $colour2;
+}
+
+@mixin inset-border($thickness, $colour1, $colour2){
+  border-right: $thickness solid $colour2;
+  border-bottom: $thickness solid $colour2;
+  border-top: $thickness solid $colour1;
+  border-left: $thickness solid $colour1;
+}

@@ -1,7 +1,7 @@
 body{
   height: 100vh;
   width: 100vw;
-  background-color: darkgray;
+  background-color: teal;
 }
 
 main{
@@ -11,46 +11,28 @@ main{
   justify-content: center;
   align-items: center;
 }
-#game-container{
-  position: relative;
-  height: 750px;
-  width: 640px;
-  background-color: white;
-  border: 6px solid black;
+
+.window{
+  background-color: darkgray;
+  @include outset-border(2px, black, white);
 }
 
-#game-grid{
-  position: absolute;
-  bottom: 16px;
-  left: 16px;
-  right: 16px;
-  height: 600px;
-  width: 600px;
-  border: 4px solid black;
-  display: grid;
-  grid: repeat(10, 1fr) / repeat(10, 1fr);
-}
-.cell{
+.window__bar{
+  height: 30px;
+  top: 0;
+  background-color: darkblue;
   display: flex;
-  justify-content: center;
   align-items: center;
-  border: 2px solid black;
-  background-color: lightgray;
+  margin: 2px;
+  color: white;
+  img{
+    height: 25px;
+    width: auto;
+    margin-left: 10px;
+  }
   p{
-    display: none;
+    margin-left: 10px;
   }
 }
 
-.revealed{
-  font-weight: bolder;
-  background-color: white;
-  p{
-    display: inline;
-  }
-}
-
-.flagged{
-  background-image: url('../img/flag.png');
-  background-size: cover;
-}
 

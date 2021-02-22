@@ -1,0 +1,137 @@
+#game-container{
+  position: relative;
+  height: 765px;
+  width: 640px;
+}
+
+#game-info{
+  width: 100%;
+  height: 80px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  *{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+#flag-count-section{
+  @include inset-border(5px, $border-colour-dark, $border-colour-light);
+  margin: 15px;
+  font-size: 30px;
+  text-align: right;
+  padding: 0;
+  line-height: 0;
+  img{
+    height:40px;
+    margin-right: 20px;
+  }
+}
+#timer{
+  @include inset-border(5px, $border-colour-dark, $border-colour-light);
+  margin: 15px;
+  font-size: 30px;
+  line-height: 0;
+  font-weight: bold;
+}
+#smiley-container{
+  height: 60px;
+  width: 60px;
+  margin: auto;
+  @include outset-border(5px, $border-colour-dark, $border-colour-light);
+  :active{
+    @include inset-border(5px, $border-colour-dark, $border-colour-light);
+  }
+}
+.smiley{
+  height: 100%;
+  width: 100%;
+  background-image: url('../img/smiley-neutral-01.png');
+  background-size: cover;
+}
+.smiley--mousedown{
+  background-image: url('../img/smiley-clicked-01.png');
+}
+.smiley--gameover{
+  background-image: url('../img/smiley-gameover-01.png');
+}
+.smiley--win{
+  background-image: url('../img/smiley-win-01.png');
+}
+
+#endgame-box{
+  position: absolute;
+  display: none;
+  flex-direction: column;
+  text-align: center;
+  width: 300px;
+  height: 150px;
+  button{
+    font-family: 'Microsoft Sans Serif';
+    margin: auto;
+    align-self: center;
+    background-color: darkgray;
+    @include outset-border(2px, $border-colour-dark, $border-colour-light);
+    &:active{
+      @include inset-border(2px, $border-colour-dark, $border-colour-light);
+    }
+  }
+}
+#game-grid{
+  @include inset-border(5px, $border-colour-dark, $border-colour-light);
+  position: absolute;
+  bottom: 15px;
+  left: 15px;
+  right: 15px;
+  height: 600px;
+  width: 600px;
+  display: grid;
+  grid: repeat(10, 1fr) / repeat(10, 1fr);
+}
+.cell{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  @include outset-border(5px, $border-colour-dark, $border-colour-light);
+  background-color: darkgray;
+  p{
+    font-family: 'Fixedsys Excelsior 3.01';
+    display: none;
+    font-size: 40px;
+    margin: 0;
+  }
+  img{
+    width: 100%;
+    height: 100%;
+    display: none;
+  }
+}
+
+.bomb{
+  width: 100%;
+  height: 100%;
+  background-image: url('../img/bomb.png');
+  background-size: cover;
+  display: none;
+}
+
+.revealed{
+  font-weight: bolder;
+  background-color: darkgray;
+  border: 1px solid rgb(83, 83, 83);
+  p{
+    display: inline;
+  }
+  img{
+    display: inline;
+  }
+}
+
+.flagged{
+  background-image: url('../img/flag_transparent-01.png');
+  background-size: cover;
+}
+
+.detonated{
+  background-color: darkred;
+}

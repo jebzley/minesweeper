@@ -1,12 +1,14 @@
 html, body {
   margin: 0;
   padding: 0;
+  font-family: "Microsoft Sans Serif";
+  font-size: 13px;
 }
 
 body {
   height: 100vh;
   width: 100vw;
-  background-color: darkgray;
+  background-color: teal;
 }
 
 main {
@@ -17,22 +19,148 @@ main {
   align-items: center;
 }
 
+.window {
+  background-color: darkgray;
+  border-right: 2px solid black;
+  border-bottom: 2px solid black;
+  border-top: 2px solid white;
+  border-left: 2px solid white;
+}
+
+.window__bar {
+  height: 30px;
+  top: 0;
+  background-color: darkblue;
+  display: flex;
+  align-items: center;
+  margin: 2px;
+  color: white;
+}
+.window__bar img {
+  height: 25px;
+  width: auto;
+  margin-left: 10px;
+}
+.window__bar p {
+  margin-left: 10px;
+}
+
 #game-container {
   position: relative;
-  height: 750px;
+  height: 765px;
   width: 640px;
-  background-color: white;
-  border: 6px solid black;
+}
+
+#game-info {
+  width: 100%;
+  height: 80px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+#game-info * {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#flag-count-section {
+  border-right: 5px solid #dbdbdb;
+  border-bottom: 5px solid #dbdbdb;
+  border-top: 5px solid #4d4d4d;
+  border-left: 5px solid #4d4d4d;
+  margin: 15px;
+  font-size: 30px;
+  text-align: right;
+  padding: 0;
+  line-height: 0;
+}
+#flag-count-section img {
+  height: 40px;
+  margin-right: 20px;
+}
+
+#timer {
+  border-right: 5px solid #dbdbdb;
+  border-bottom: 5px solid #dbdbdb;
+  border-top: 5px solid #4d4d4d;
+  border-left: 5px solid #4d4d4d;
+  margin: 15px;
+  font-size: 30px;
+  line-height: 0;
+  font-weight: bold;
+}
+
+#smiley-container {
+  height: 60px;
+  width: 60px;
+  margin: auto;
+  border-right: 5px solid #4d4d4d;
+  border-bottom: 5px solid #4d4d4d;
+  border-top: 5px solid #dbdbdb;
+  border-left: 5px solid #dbdbdb;
+}
+#smiley-container :active {
+  border-right: 5px solid #dbdbdb;
+  border-bottom: 5px solid #dbdbdb;
+  border-top: 5px solid #4d4d4d;
+  border-left: 5px solid #4d4d4d;
+}
+
+.smiley {
+  height: 100%;
+  width: 100%;
+  background-image: url("../img/smiley-neutral-01.png");
+  background-size: cover;
+}
+
+.smiley--mousedown {
+  background-image: url("../img/smiley-clicked-01.png");
+}
+
+.smiley--gameover {
+  background-image: url("../img/smiley-gameover-01.png");
+}
+
+.smiley--win {
+  background-image: url("../img/smiley-win-01.png");
+}
+
+#endgame-box {
+  position: absolute;
+  display: none;
+  flex-direction: column;
+  text-align: center;
+  width: 300px;
+  height: 150px;
+}
+#endgame-box button {
+  font-family: "Microsoft Sans Serif";
+  margin: auto;
+  align-self: center;
+  background-color: darkgray;
+  border-right: 2px solid #4d4d4d;
+  border-bottom: 2px solid #4d4d4d;
+  border-top: 2px solid #dbdbdb;
+  border-left: 2px solid #dbdbdb;
+}
+#endgame-box button:active {
+  border-right: 2px solid #dbdbdb;
+  border-bottom: 2px solid #dbdbdb;
+  border-top: 2px solid #4d4d4d;
+  border-left: 2px solid #4d4d4d;
 }
 
 #game-grid {
+  border-right: 5px solid #dbdbdb;
+  border-bottom: 5px solid #dbdbdb;
+  border-top: 5px solid #4d4d4d;
+  border-left: 5px solid #4d4d4d;
   position: absolute;
-  bottom: 16px;
-  left: 16px;
-  right: 16px;
+  bottom: 15px;
+  left: 15px;
+  right: 15px;
   height: 600px;
   width: 600px;
-  border: 4px solid black;
   display: grid;
   grid: repeat(10, 1fr)/repeat(10, 1fr);
 }
@@ -41,22 +169,49 @@ main {
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 2px solid black;
-  background-color: lightgray;
+  border-right: 5px solid #4d4d4d;
+  border-bottom: 5px solid #4d4d4d;
+  border-top: 5px solid #dbdbdb;
+  border-left: 5px solid #dbdbdb;
+  background-color: darkgray;
 }
 .cell p {
+  font-family: "Fixedsys Excelsior 3.01";
+  display: none;
+  font-size: 40px;
+  margin: 0;
+}
+.cell img {
+  width: 100%;
+  height: 100%;
+  display: none;
+}
+
+.bomb {
+  width: 100%;
+  height: 100%;
+  background-image: url("../img/bomb.png");
+  background-size: cover;
   display: none;
 }
 
 .revealed {
   font-weight: bolder;
-  background-color: white;
+  background-color: darkgray;
+  border: 1px solid #535353;
 }
 .revealed p {
   display: inline;
 }
+.revealed img {
+  display: inline;
+}
 
 .flagged {
-  background-image: url("../img/flag.png");
+  background-image: url("../img/flag_transparent-01.png");
   background-size: cover;
+}
+
+.detonated {
+  background-color: darkred;
 }/*# sourceMappingURL=styles.css.map */
