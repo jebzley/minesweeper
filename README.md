@@ -2,7 +2,7 @@
 A recreation of Minesweeper, the single-player puzzle game commonly bundled with operating systems.
 
 ## General Info 
-I made this with vanilla Javascript with an HTML frontend during week 4 of my software development course at _nology. 
+I made this during week 4 of my software development course at _nology. 
 
 I absolutely love Minesweeper and when tasked with making a Javascript game in a week I jumped at the chance. It seemed like a great balance between something I could make in a week and something that would challenge me - I had never used recursion before, and it was a good chance to make use of classes, which I had never needed on my earlier, smaller projects.
 
