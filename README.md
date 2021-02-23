@@ -55,10 +55,10 @@ export const createGameArray = () => {
     }
   }
   return [].concat.apply([], tempArr);
+};
 
   // scripts.js
   const gameArr = createGameArray();
-};
 ````
 We now need 15 bombs randomly placed on cells. Initially I had a simple function placing 15 bombs on a cells with a random index anywhere between 0 and 99.
 
