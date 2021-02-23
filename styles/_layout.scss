@@ -1,10 +1,11 @@
-body{
+body {
   height: 100vh;
   width: 100vw;
   background-color: teal;
+  overflow: hidden;
 }
 
-main{
+main {
   height: 100%;
   width: 100%;
   display: flex;
@@ -12,12 +13,12 @@ main{
   align-items: center;
 }
 
-.window{
+.window {
   background-color: darkgray;
   @include outset-border(2px, black, white);
 }
 
-.window__bar{
+.window__bar {
   height: 30px;
   top: 0;
   background-color: darkblue;
@@ -25,14 +26,63 @@ main{
   align-items: center;
   margin: 2px;
   color: white;
-  img{
+  img {
     height: 25px;
     width: auto;
     margin-left: 10px;
   }
-  p{
+  p {
     margin-left: 10px;
   }
 }
 
+#taskbar {
+  position: absolute;
+  bottom: -2px;
+  width: 100%;
+  height: 32px;
+  z-index: -1;
 
+  display: flex;
+  align-items: center;
+}
+
+.taskbar__button {
+  height: 25px;
+  width: 150px;
+  display: flex;
+  align-items: center;
+  margin: 0 2px 0 2px;
+  padding: 0 2px 0 2px;
+  img{
+    height: 20px;
+    width: 20px;
+    padding-right: 5px;
+  }
+  &:active {
+    @include inset-border(2px, black, white);
+  }
+}
+
+#start {
+  width: 70px;
+  justify-content: center;
+  font-weight: bold;
+}
+
+#time-container{
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  img{
+    height: 20px;
+    width: 20px;
+    padding-right: 5px;
+  }
+  right: 5px;
+  height: 23px;
+  width: 90px;
+  @include inset-border(2px, $border-colour-dark, $border-colour-light)
+  
+}

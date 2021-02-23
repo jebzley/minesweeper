@@ -10,36 +10,41 @@ export class Cell {
   }
 }
 
+export const padNumber = (number) => (number < 10 ? `0${number}` : number);
+
 export const renderBoard = () => {
   let divContent = "";
   for (let i = 0; i < 100; i++) {
-    i < 10
-      ? (divContent += `<div id='cell0${i}' class='cell'></div>`)
-      : (divContent += `<div id='cell${i}' class='cell'></div>`);
+    divContent += `<div id='cell${padNumber(i)}' class='cell'></div>`
   }
   return divContent;
 };
 
 export const createGameArray = () => {
-    let tempArr = [];
-    for (let row = 0; row < 10; row++) {
-      tempArr[row] = [];
-      for (let col = 0; col < 10; col++) {
-        tempArr[row][col] = new Cell(col, row);
-      }
+  let tempArr = [];
+  for (let row = 0; row < 10; row++) {
+    tempArr[row] = [];
+    for (let col = 0; col < 10; col++) {
+      tempArr[row][col] = new Cell(col, row);
     }
-    return [].concat.apply([], tempArr);
-  };
+  }
+  return [].concat.apply([], tempArr);
+};
 
-export const placeBombs = (gameArr) => {
+export const generateRandomNumbers = () => {
   let randomNumArray = [];
   while (randomNumArray.length < 15) {
     let randomNumber = Math.floor(Math.random() * 99);
-    if(randomNumArray.indexOf(randomNumber)  === -1) randomNumArray.push(randomNumber);
+    if (randomNumArray.indexOf(randomNumber) === -1)
+      randomNumArray.push(randomNumber);
   }
-  randomNumArray.forEach(number => {
+  return randomNumArray;
+};
+export const placeBombs = (gameArr) => {
+  const randomNumArray = generateRandomNumbers();
+  randomNumArray.forEach((number) => {
     gameArr[number].isBomb = true;
-  })
+  });
 };
 
 export const getBombCount = (gameArr) => {
@@ -133,8 +138,8 @@ export const gameOver = (gameArr) => {
 
 export const flagCounter = (state, flagCount) => {
   if (state) {
-    return (flagCount = flagCount + 1);
-  } else return (flagCount = flagCount - 1);
+    return (flagCount += 1);
+  } else return (flagCount -= 1);
 };
 
-export const padNumber = (number) => (number < 10 ? `0${number}` : number);
+

@@ -1,7 +1,7 @@
 html, body {
   margin: 0;
   padding: 0;
-  font-family: "Microsoft Sans Serif";
+  font-family: "Microsoft Sans Serif", sans-serif;
   font-size: 13px;
 }
 
@@ -9,6 +9,7 @@ body {
   height: 100vh;
   width: 100vw;
   background-color: teal;
+  overflow: hidden;
 }
 
 main {
@@ -43,6 +44,61 @@ main {
 }
 .window__bar p {
   margin-left: 10px;
+}
+
+#taskbar {
+  position: absolute;
+  bottom: -2px;
+  width: 100%;
+  height: 32px;
+  z-index: -1;
+  display: flex;
+  align-items: center;
+}
+
+.taskbar__button {
+  height: 25px;
+  width: 150px;
+  display: flex;
+  align-items: center;
+  margin: 0 2px 0 2px;
+  padding: 0 2px 0 2px;
+}
+.taskbar__button img {
+  height: 20px;
+  width: 20px;
+  padding-right: 5px;
+}
+.taskbar__button:active {
+  border-right: 2px solid white;
+  border-bottom: 2px solid white;
+  border-top: 2px solid black;
+  border-left: 2px solid black;
+}
+
+#start {
+  width: 70px;
+  justify-content: center;
+  font-weight: bold;
+}
+
+#time-container {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  right: 5px;
+  height: 23px;
+  width: 90px;
+  border-right: 2px solid #dbdbdb;
+  border-bottom: 2px solid #dbdbdb;
+  border-top: 2px solid #4d4d4d;
+  border-left: 2px solid #4d4d4d;
+}
+#time-container img {
+  height: 20px;
+  width: 20px;
+  padding-right: 5px;
 }
 
 #game-container {
@@ -99,7 +155,7 @@ main {
   border-top: 5px solid #dbdbdb;
   border-left: 5px solid #dbdbdb;
 }
-#smiley-container :active {
+#smiley-container:active {
   border-right: 5px solid #dbdbdb;
   border-bottom: 5px solid #dbdbdb;
   border-top: 5px solid #4d4d4d;
@@ -176,7 +232,7 @@ main {
   background-color: darkgray;
 }
 .cell p {
-  font-family: "Fixedsys Excelsior 3.01";
+  font-family: "Infra", "Wide Latin", serif;
   display: none;
   font-size: 40px;
   margin: 0;

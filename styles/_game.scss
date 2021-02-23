@@ -39,7 +39,7 @@
   width: 60px;
   margin: auto;
   @include outset-border(5px, $border-colour-dark, $border-colour-light);
-  :active{
+  &:active{
     @include inset-border(5px, $border-colour-dark, $border-colour-light);
   }
 }
@@ -95,7 +95,8 @@
   @include outset-border(5px, $border-colour-dark, $border-colour-light);
   background-color: darkgray;
   p{
-    font-family: 'Fixedsys Excelsior 3.01';
+    //font-family: 'Fixedsys Excelsior 3.01';
+    font-family: 'Infra','Wide Latin', serif;
     display: none;
     font-size: 40px;
     margin: 0;

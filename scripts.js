@@ -9,12 +9,13 @@ import {
   findOccupiedCells,
   toggle,
   gameOver,
+  flagCounter,
   padNumber,
 } from "./minesweeper.js";
 
 // INITIALISATION
 document.getElementById("game-grid").innerHTML = renderBoard();
-const gameArr = createGameArray(Cell);
+const gameArr = createGameArray();
 placeBombs(gameArr);
 let amountOfBombs = getBombCount(gameArr);
 calculateAdjacentBombCount(gameArr);
@@ -74,8 +75,6 @@ document.querySelectorAll(".cell").forEach((cell) => {
 
       document.getElementById("flag-count").innerHTML =
         amountOfBombs - score.amountOfFlags;
-
-      
     },
     false
   );
@@ -179,3 +178,17 @@ document.querySelectorAll(".reset").forEach((button) => {
     document.getElementById("smiley").classList.remove("smiley--win");
   });
 });
+
+let currentTime = new Date();
+let hours = currentTime.getHours();
+let minutes = currentTime.getMinutes();
+if (minutes < 10) {
+  minutes = "0" + minutes;
+}
+let t_str = hours + ":" + minutes + " ";
+if (hours > 11) {
+  t_str += "PM";
+} else {
+  t_str += "AM";
+}
+document.getElementById("time").innerHTML = t_str;
