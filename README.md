@@ -21,7 +21,7 @@ Minesweeper is simple but challenging. You are given a grid of 100 tiles, with 1
 * The number on each tile corresponds to how many bombs are on the 8 adjacent tiles.
 * If a tile has no adjacent bombs, the game will recursively search until it finds surrounding tiles with adjacent bombs.
 * If you suspect a tile has a bomb on it, right click to place a flag on it.
-* If you manage to reveal every tile that contains a bomb, you have won the game.
+* If you manage to reveal every tile that doesn't contian a bomb, you have won the game!
 
 ## How it works
 
