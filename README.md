@@ -3,7 +3,7 @@
 A recreation of Minesweeper, the single-player puzzle game commonly bundled with operating systems.
 
 ## General Info 
-I made this with vanilla Javascript with an HTML frontend during week 4 of my software development course at _nology. 
+I made this during week 4 of my software development course at _nology. 
 
 I absolutely love Minesweeper and when tasked with making a Javascript game in a week I jumped at the chance. It seemed like a great balance between something I could make in a week and something that would challenge me - I had never used recursion before, and it was a good chance to make use of classes, which I had never needed on my earlier, smaller projects.
 
@@ -22,7 +22,7 @@ Minesweeper is simple but challenging. You are given a grid of 100 tiles, with 1
 * The number on each tile corresponds to how many bombs are on the 8 adjacent tiles.
 * If a tile has no adjacent bombs, the game will recursively search until it finds surrounding tiles with adjacent bombs.
 * If you suspect a tile has a bomb on it, right click to place a flag on it.
-* If you manage to reveal every tile that contains a bomb, you have won the game.
+* If you manage to reveal every tile that doesn't contian a bomb, you have won the game!
 
 ## How it works
 
@@ -56,10 +56,10 @@ export const createGameArray = () => {
     }
   }
   return [].concat.apply([], tempArr);
+};
 
   // scripts.js
   const gameArr = createGameArray();
-};
 ````
 We now need 15 bombs randomly placed on cells. Initially I had a simple function placing 15 bombs on a cells with a random index anywhere between 0 and 99.
 
