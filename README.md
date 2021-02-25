@@ -1,3 +1,4 @@
+![alt text](./img/readme_head.png)
 # Minesweeper
 A recreation of Minesweeper, the single-player puzzle game commonly bundled with operating systems.
 

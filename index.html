@@ -8,12 +8,15 @@
     <script type="module" src="./minesweeper.js"></script>
     <script type="module" src="./scripts.js" async defer></script>
     <title>Minesweeper</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@800&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <main>
-      <div id="icons-section">
-
-      </div>
+      <div id="icons-section"></div>
       <div class="window" id="game-container">
         <div class="window__bar">
           <img src="./img/bomb.png" />
@@ -39,9 +42,18 @@
 
       <div class="window" id="taskbar">
         <div class="window taskbar__button" id="start"><p>🦕 Start</p></div>
-        <div class="window taskbar__button"><img src="./img/bomb.png" /> <p>Minesweeper</p></div>
-        <div class="window taskbar__button"><img src="./img/netscape.png" /><p>Ask Jeeves</p></div>
-        <div id="time-container"><img src="./img/volume.png"><p id="time"></p></div>
+        <div class="window taskbar__button">
+          <img src="./img/bomb.png" />
+          <p>Minesweeper</p>
+        </div>
+        <div class="window taskbar__button">
+          <img src="./img/netscape.png" />
+          <p>Ask Jeeves</p>
+        </div>
+        <div id="time-container">
+          <img src="./img/volume.png" />
+          <p id="time"></p>
+        </div>
       </div>
     </main>
   </body>
